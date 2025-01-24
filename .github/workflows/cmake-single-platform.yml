@@ -30,8 +30,8 @@ jobs:
 
     - name: Set up pico-sdk
       run: |
-        git clone -b 2.1.0 https://github.com/raspberrypi/pico-sdk.git ${GITHUB_WORKSPACE}/pico-sdk
-        export PICO_SDK_PATH=${GITHUB_WORKSPACE}/pico-sdk
+        git clone -b 2.1.0 https://github.com/raspberrypi/pico-sdk.git ${{github.workspace}}/pico-sdk
+        export PICO_SDK_PATH=${{github.workspace}}/pico-sdk
 
 
 
