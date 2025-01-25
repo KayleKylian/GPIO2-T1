@@ -11,7 +11,7 @@
 
 // PROTOTYPES
 void init_hardware(void);
-char scan_keypad(void);
+char get_key(void);
 void play_buzzer(void);
 void control_led_and_buzzer(char key);
 // GLOBAL VARIABLES
