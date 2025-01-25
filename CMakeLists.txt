@@ -46,7 +46,10 @@ pico_enable_stdio_usb(GPIO2-T1 0)
 
 # Add the standard library to the build
 target_link_libraries(GPIO2-T1
-        pico_stdlib)
+        pico_stdlib
+        hardware_pio
+        hardware_adc
+        pico_bootrom)
 
 # Add the standard include files to the build
 target_include_directories(GPIO2-T1 PRIVATE
@@ -58,5 +61,9 @@ target_link_libraries(GPIO2-T1
         
         )
 
+# Adiciona o arquivo PIO e gera o header
+pico_generate_pio_header(GPIO2-T1 ${CMAKE_CURRENT_LIST_DIR}/ws2818b.pio)
+
+# Gera os artefatos extras
 pico_add_extra_outputs(GPIO2-T1)
 
