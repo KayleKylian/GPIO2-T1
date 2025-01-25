@@ -114,7 +114,7 @@ void init_hardware(void)
     }
 }
 
-char scan_keypad(void)
+char get_key(void)
 {
     // Lê o estado das teclas do teclado matricial
     for (int col = 0; col < 4; col++) {
