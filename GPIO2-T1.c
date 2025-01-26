@@ -13,8 +13,7 @@
 // PROTOTYPES
 void init_hardware(void);
 char get_key(void);
-void play_buzzer(void);
-void control_led_and_buzzer(char key);
+void control_led(char key);
 void init_leds(void);
 void set_led(int index, uint8_t r, uint8_t g, uint8_t b);
 void clear_leds(void);
@@ -52,14 +51,14 @@ int main()
         if (key)
         {
             printf("Tecla pressionada: %c\n", key);
-            control_led_and_buzzer(key);
+            control_led(key);
         }
         sleep_ms(50);
     }
 }
 
 // FUNCTIONS
-void control_led_and_buzzer(char key)
+void control_led(char key)
 {
     switch (key)
     {
@@ -591,11 +590,6 @@ char get_key(void)
         gpio_put(COL_PINS[col], 1);
     }
     return 0;
-}
-
-void play_buzzer(void)
-{
-    // Função para emitir som no buzzer (implemente conforme necessário)
 }
 
 void animacao_ascendente() {
