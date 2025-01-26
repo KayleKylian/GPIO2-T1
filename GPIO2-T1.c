@@ -20,6 +20,7 @@ void set_led(int index, uint8_t r, uint8_t g, uint8_t b);
 void clear_leds(void);
 void write_leds(void);
 void animacao_ascendente(void);
+void animacao_descendente(void);
 
 // GLOBAL VARIABLES
 const uint8_t COL_PINS[] = {19, 18, 17, 16};
@@ -479,6 +480,10 @@ void control_led_and_buzzer(char key)
         clear_leds();
         write_leds();
         break;
+
+    case '9': 
+        animacao_descendente();
+        break;
     case 'A':
         clear_leds(); // Apaga todos os LEDs
         break;
@@ -640,5 +645,52 @@ void animacao_ascendente() {
     sleep_ms(500);
 
     clear_leds();
+}
+
+void animacao_descendente() {
+    clear_leds();
+    set_led(20, 255, 0, 0);
+    set_led(21, 255, 0, 0);
+    set_led(22, 255, 0, 0);
+    set_led(23, 255, 0, 0);
+    set_led(24, 255, 0, 0);
+    write_leds();
+    sleep_ms(500);
+
+    clear_leds();
+    set_led(15, 255, 0, 0);
+    set_led(16, 255, 0, 0);
+    set_led(17, 255, 0, 0);
+    set_led(18, 255, 0, 0);
+    set_led(19, 255, 0, 0);
+    write_leds();
+    sleep_ms(500);
+
+    clear_leds();
+    set_led(10, 255, 0, 0);
+    set_led(11, 255, 0, 0);
+    set_led(12, 255, 0, 0);
+    set_led(13, 255, 0, 0);
+    set_led(14, 255, 0, 0);
+    write_leds();
+    sleep_ms(500);
+
+    clear_leds();
+    set_led(5, 255, 0, 0);
+    set_led(6, 255, 0, 0);
+    set_led(7, 255, 0, 0);
+    set_led(8, 255, 0, 0);
+    set_led(9, 255, 0, 0);
+    write_leds();
+    sleep_ms(500);
+
+    clear_leds();
+    set_led(0, 255, 0, 0);
+    set_led(1, 255, 0, 0);
+    set_led(2, 255, 0, 0);
+    set_led(3, 255, 0, 0);
+    set_led(4, 255, 0, 0);
+    write_leds();
+    sleep_ms(500);
 }
 
