@@ -224,7 +224,61 @@ void control_led_and_buzzer(char key) {
         case '3':
             set_led(2, 0, 0, 255); // Azul 100%
             break;
-        case '4':
+        case '4': // Animação de onda de luz
+            for (int frame = 0; frame < 5; frame++) {
+                clear_leds();
+                for (int i = 0; i < LED_COUNT; i++) {
+                    int intensity = (i + frame) % 5 == 0 ? 255 : 0;
+                    set_led(i, intensity, intensity / 2, intensity / 3); // Tons de roxo
+                }
+                write_leds(); // Atualiza os LEDs
+                sleep_ms(250);
+            }
+            clear_leds();
+            write_leds(); // Garante que os LEDs sejam apagados ao final
+            break;
+        case '5': // Animação de "caminho"
+            for (int frame = 0; frame < LED_COUNT; frame++) {
+                clear_leds();
+                set_led(frame % LED_COUNT, 0, 255, 255); // LED atual em ciano
+                write_leds(); // Atualiza os LEDs
+                sleep_ms(150);
+            }
+            clear_leds();
+            write_leds(); // Garante que os LEDs sejam apagados ao final
+            break;
+
+        case '6': // Piscar alternado
+            for (int frame = 0; frame < 6; frame++) {
+                clear_leds();
+                if (frame % 2 == 0) {
+                    for (int i = 0; i < LED_COUNT; i += 2) {
+                        set_led(i, 255, 255, 0); // Amarelo
+                    }
+                } else {
+                    for (int i = 1; i < LED_COUNT; i += 2) {
+                        set_led(i, 255, 255, 0); // Amarelo
+                    }
+                }
+                write_leds(); // Atualiza os LEDs
+                sleep_ms(300);
+            }
+            clear_leds();
+            write_leds(); // Garante que os LEDs sejam apagados ao final
+            break;
+
+        case '7': // "Corrida" circular
+            for (int frame = 0; frame < LED_COUNT; frame++) {
+                clear_leds();
+                set_led(frame % LED_COUNT, 255, 0, 255); // Magenta
+                set_led((frame + 1) % LED_COUNT, 128, 0, 128); // Magenta mais fraco
+                write_leds(); // Atualiza os LEDs
+                sleep_ms(100);
+            }
+            clear_leds();
+            write_leds(); // Garante que os LEDs sejam apagados ao final
+            break;
+        case '8':
             break;
         case 'A':
             clear_leds(); // Apaga todos os LEDs
