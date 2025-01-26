@@ -3,6 +3,7 @@
 Esta atividade tem como objetivo demonstrar o uso dos pinos GPIO do Raspberry Pi Pico para controlar uma matriz de LEDs, apresentando animações para cada tecla pressionada no teclado matricial.
 
 ## Vídeo Demonstrativo:
+[![Assista ao vídeo demonstrativo](https://i.ytimg.com/vi/2UtOUw4C7Rc/hq720_2.jpg?sqp=-oaymwEoCJUDENAFSFryq4qpAxoIARUAAIhC0AEB2AEB4gEKCBgQAhgGOAFAAQ==&rs=AOn4CLBi773sBA4tVebGu7UFQCHzUQzAfg)](https://youtube.com/shorts/2UtOUw4C7Rc?si=NY0UAir2AaNBP6lM)
 
 ## Introdução às Funções `set_led`
 
