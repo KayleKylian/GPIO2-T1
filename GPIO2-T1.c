@@ -279,8 +279,6 @@ void control_led_and_buzzer(char key) {
             write_leds(); // Garante que os LEDs sejam apagados ao final
             break;
         case '8':
-            break;
-        case '8':
              // Letra G
             clear_leds();
             set_led(23, 255, 0, 0); set_led(22, 255, 0, 0); set_led(21, 255, 0, 0); set_led(15, 255, 0, 0);
