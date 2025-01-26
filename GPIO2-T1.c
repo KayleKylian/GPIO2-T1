@@ -692,5 +692,7 @@ void animacao_descendente() {
     set_led(4, 255, 0, 0);
     write_leds();
     sleep_ms(500);
+    
+    clear_leds();
 }
 
