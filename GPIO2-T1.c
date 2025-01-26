@@ -226,6 +226,54 @@ void control_led_and_buzzer(char key) {
             break;
         case '4':
             break;
+        case '8':
+             // Letra G
+            clear_leds();
+            set_led(23, 255, 0, 0); set_led(22, 255, 0, 0); set_led(21, 255, 0, 0); set_led(15, 255, 0, 0);
+            set_led(14, 255, 0, 0); set_led(11, 255, 0, 0); set_led(10, 255, 0, 0); set_led(9, 255, 0, 0);
+            set_led(5, 255, 0, 0); set_led(3, 255, 0, 0); set_led(2, 255, 0, 0); set_led(1, 255, 0, 0);
+            write_leds();
+            sleep_ms(1250);
+            // Letra L
+            clear_leds();
+            set_led(24, 255, 0, 0); set_led(15, 255, 0, 0); set_led(14, 255, 0, 0); set_led(5, 255, 0, 0);
+            set_led(4, 255, 0, 0); set_led(3, 255, 0, 0); set_led(2, 255, 0, 0); set_led(1, 255, 0, 0); set_led(0, 255, 0, 0);
+            write_leds();
+            sleep_ms(1250);
+            // Letra O
+            clear_leds();
+            set_led(23, 255, 0, 0); set_led(22, 255, 0, 0); set_led(21, 255, 0, 0); set_led(19, 255, 0, 0);
+            set_led(15, 255, 0, 0); set_led(14, 255, 0, 0); set_led(10, 255, 0, 0); set_led(9, 255, 0, 0);
+            set_led(5, 255, 0, 0); set_led(3, 255, 0, 0); set_led(2, 255, 0, 0); set_led(1, 255, 0, 0);
+            write_leds();
+            sleep_ms(1250);
+             // Letra B
+            clear_leds();
+            set_led(24, 255, 0, 0); set_led(23, 255, 0, 0); set_led(22, 255, 0, 0); set_led(21, 255, 0, 0);
+            set_led(19, 255, 0, 0); set_led(15, 255, 0, 0); set_led(14, 255, 0, 0); set_led(13, 255, 0, 0);
+            set_led(12, 255, 0, 0); set_led(11, 255, 0, 0); set_led(9, 255, 0, 0); set_led(5, 255, 0, 0);
+            set_led(4, 255, 0, 0); set_led(3, 255, 0, 0); set_led(2, 255, 0, 0); set_led(1, 255, 0, 0);
+            write_leds();
+            sleep_ms(1250);
+            // Letra A
+            clear_leds();
+            set_led(23, 255, 0, 0); set_led(22, 255, 0, 0); set_led(21, 255, 0, 0); set_led(19, 255, 0, 0);
+            set_led(15, 255, 0, 0); set_led(14, 255, 0, 0); set_led(13, 255, 0, 0); set_led(12, 255, 0, 0);
+            set_led(11, 255, 0, 0); set_led(10, 255, 0, 0); set_led(9, 255, 0, 0); set_led(5, 255, 0, 0);
+            set_led(4, 255, 0, 0); set_led(0, 255, 0, 0);
+            write_leds();
+            sleep_ms(1250);
+            // Letra L
+            clear_leds();
+            set_led(24, 0, 255, 0); set_led(15, 0, 0, 255); set_led(14, 0, 255, 0); set_led(5, 255, 0, 0);
+            set_led(4, 0, 255, 0); set_led(3, 0, 0, 255); set_led(2, 0, 255, 0); set_led(1, 255, 0, 0); set_led(0, 255, 0, 0);
+            write_leds();
+            sleep_ms(1250);
+            
+            // Limpa os LEDs ao final
+            clear_leds();
+            write_leds();
+            break;
         case 'A':
             clear_leds(); // Apaga todos os LEDs
             break;
