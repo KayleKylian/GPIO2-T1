@@ -22,6 +22,7 @@ void animacao_ascendente(void);
 void animacao_descendente(void);
 
 // GLOBAL VARIABLES
+int valor_gpio5 = 0;
 const uint8_t COL_PINS[] = {19, 18, 17, 16};
 const uint8_t ROW_PINS[] = {28, 27, 26, 20};
 const char KEY_MAP[4][4] = {
@@ -48,6 +49,9 @@ int main()
     while (true)
     {
         char key = get_key();
+        if(!gpio_get(5)){ // para testar funcionamento na placa.
+            animacao_ascendente();
+        }
         if (key)
         {
             printf("Tecla pressionada: %c\n", key);
@@ -511,6 +515,13 @@ void control_led(char key)
 
 void init_hardware(void)
 {
+    // Inicializa o GPIO5 como entrada
+    gpio_init(5);
+    
+    // Configura o pino GPIO5 com resistor pull-up
+    gpio_set_dir(5, GPIO_IN);
+    gpio_pull_up(5);
+
     // Inicializa o teclado matricial
     for (int i = 0; i < 4; i++)
     {
@@ -570,6 +581,7 @@ void write_leds(void)
 
 char get_key(void)
 {
+    
     for (int col = 0; col < 4; col++)
     {
         gpio_put(COL_PINS[col], 0);
@@ -639,6 +651,7 @@ void animacao_ascendente() {
     sleep_ms(500);
 
     clear_leds();
+    write_leds();
 }
 
 void animacao_descendente() {
@@ -688,5 +701,6 @@ void animacao_descendente() {
     sleep_ms(500);
     
     clear_leds();
+    write_leds();
 }
 
