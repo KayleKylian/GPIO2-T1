@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "hardware/clocks.h"
+#include "hardware/pwm.h"
 #include "pico/bootrom.h"
 
 // Biblioteca gerada pelo arquivo .pio durante a compilação.
@@ -9,6 +9,7 @@
 // MACROS
 #define LED_COUNT 25
 #define LED_PIN 7
+#define BUZZER_PIN 2 // Defina o pino do buzzer
 
 // PROTOTYPES
 void init_hardware(void);
@@ -18,8 +19,7 @@ void init_leds(void);
 void set_led(int index, uint8_t r, uint8_t g, uint8_t b);
 void clear_leds(void);
 void write_leds(void);
-void animacao_ascendente(void);
-void animacao_descendente(void);
+void play_buzzer(int frequency, int duration_ms);
 
 // GLOBAL VARIABLES
 int valor_gpio5 = 0;
@@ -49,8 +49,9 @@ int main()
     while (true)
     {
         char key = get_key();
-        if(!gpio_get(5)){ // para testar funcionamento na placa.
-            animacao_ascendente();
+        if (!gpio_get(5))
+        { // Para testar funcionamento na placa.
+            printf("Botão GPIO 5 pressionado!\n");
         }
         if (key)
         {
@@ -62,476 +63,52 @@ int main()
 }
 
 // FUNCTIONS
+void play_buzzer(int frequency, int duration_ms)
+{
+    gpio_set_function(BUZZER_PIN, GPIO_FUNC_PWM); // Configura o pino como PWM
+    uint slice_num = pwm_gpio_to_slice_num(BUZZER_PIN);
+    pwm_set_wrap(slice_num, 125000000 / frequency - 1); // Define a frequência
+    pwm_set_gpio_level(BUZZER_PIN, pwm_get_wrap(slice_num) / 2); // Duty cycle de 50%
+    pwm_set_enabled(slice_num, true);
+    sleep_ms(duration_ms);
+    pwm_set_enabled(slice_num, false); // Desativa o PWM após a duração
+}
+
 void control_led(char key)
 {
     switch (key)
     {
-    case '1':
-        clear_leds();
-        // Frame 1: Quadrado
-        clear_leds();
-        set_led(24, 255, 255, 0);
-        set_led(23, 255, 255, 0);
-        set_led(22, 255, 255, 0);
-        set_led(21, 255, 255, 0);
-        set_led(20, 255, 255, 0);
-        set_led(19, 255, 255, 0);
-        set_led(14, 255, 255, 0);
-        set_led(9, 255, 255, 0);
-        set_led(4, 255, 255, 0);
-        set_led(3, 255, 255, 0);
-        set_led(2, 255, 255, 0);
-        set_led(1, 255, 255, 0);
-        set_led(0, 255, 255, 0);
-        set_led(5, 255, 255, 0);
-        set_led(10, 255, 255, 0);
-        set_led(15, 255, 255, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Frame 2: X
-        clear_leds();
-        set_led(24, 255, 0, 0);
-        set_led(18, 255, 0, 0);
-        set_led(12, 255, 0, 0);
-        set_led(6, 255, 0, 0);
-        set_led(0, 255, 0, 0);
-        set_led(20, 255, 0, 0);
-        set_led(16, 255, 0, 0);
-        set_led(8, 255, 0, 0);
-        set_led(4, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Frame 3: Bola
-        clear_leds();
-        set_led(23, 0, 255, 0);
-        set_led(22, 0, 255, 0);
-        set_led(21, 0, 255, 0);
-        set_led(19, 0, 255, 0);
-        set_led(14, 0, 255, 0);
-        set_led(9, 0, 255, 0);
-        set_led(3, 0, 255, 0);
-        set_led(2, 0, 255, 0);
-        set_led(1, 0, 255, 0);
-        set_led(5, 0, 255, 0);
-        set_led(10, 0, 255, 0);
-        set_led(15, 0, 255, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Frame 4: Triângulo
-        clear_leds();
-        set_led(17, 0, 0, 255);
-        set_led(13, 0, 0, 255);
-        set_led(9, 0, 0, 255);
-        set_led(8, 0, 0, 255);
-        set_led(7, 0, 0, 255);
-        set_led(6, 0, 0, 255);
-        set_led(5, 0, 0, 255);
-        set_led(11, 0, 0, 255);
-        write_leds();
-        sleep_ms(1250);
-
-        // Frame 5: Reta
-        clear_leds();
-        set_led(12, 255, 0, 255);
-        set_led(7, 255, 0, 255);
-        set_led(17, 255, 0, 255);
-        set_led(22, 255, 0, 255);
-        set_led(2, 255, 0, 255);
-        write_leds();
-        sleep_ms(1250);
-
-        // Limpa os LEDs ao final
-        clear_leds();
-        write_leds();
-        break;
-    case '2':
-        clear_leds();
-
-        // Letra B
-        clear_leds();
-        set_led(24, 255, 0, 0);
-        set_led(23, 255, 0, 0);
-        set_led(22, 255, 0, 0);
-        set_led(21, 255, 0, 0);
-        set_led(19, 255, 0, 0);
-        set_led(15, 255, 0, 0);
-        set_led(14, 255, 0, 0);
-        set_led(13, 255, 0, 0);
-        set_led(12, 255, 0, 0);
-        set_led(11, 255, 0, 0);
-        set_led(9, 255, 0, 0);
-        set_led(5, 255, 0, 0);
-        set_led(4, 255, 0, 0);
-        set_led(3, 255, 0, 0);
-        set_led(2, 255, 0, 0);
-        set_led(1, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Letra I
-        clear_leds();
-        set_led(24, 255, 0, 0);
-        set_led(23, 255, 0, 0);
-        set_led(22, 255, 0, 0);
-        set_led(21, 255, 0, 0);
-        set_led(20, 255, 0, 0);
-        set_led(17, 255, 0, 0);
-        set_led(12, 255, 0, 0);
-        set_led(7, 255, 0, 0);
-        set_led(4, 255, 0, 0);
-        set_led(3, 255, 0, 0);
-        set_led(2, 255, 0, 0);
-        set_led(1, 255, 0, 0);
-        set_led(0, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Letra T
-        clear_leds();
-        set_led(24, 255, 0, 0);
-        set_led(23, 255, 0, 0);
-        set_led(22, 255, 0, 0);
-        set_led(21, 255, 0, 0);
-        set_led(20, 255, 0, 0);
-        set_led(17, 255, 0, 0);
-        set_led(12, 255, 0, 0);
-        set_led(7, 255, 0, 0);
-        set_led(2, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Letra D
-        clear_leds();
-        set_led(24, 255, 0, 0);
-        set_led(23, 255, 0, 0);
-        set_led(22, 255, 0, 0);
-        set_led(21, 255, 0, 0);
-        set_led(19, 255, 0, 0);
-        set_led(15, 255, 0, 0);
-        set_led(14, 255, 0, 0);
-        set_led(10, 255, 0, 0);
-        set_led(9, 255, 0, 0);
-        set_led(5, 255, 0, 0);
-        set_led(4, 255, 0, 0);
-        set_led(3, 255, 0, 0);
-        set_led(2, 255, 0, 0);
-        set_led(1, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Letra O
-        clear_leds();
-        set_led(23, 255, 0, 0);
-        set_led(22, 255, 0, 0);
-        set_led(21, 255, 0, 0);
-        set_led(19, 255, 0, 0);
-        set_led(15, 255, 0, 0);
-        set_led(14, 255, 0, 0);
-        set_led(10, 255, 0, 0);
-        set_led(9, 255, 0, 0);
-        set_led(5, 255, 0, 0);
-        set_led(3, 255, 0, 0);
-        set_led(2, 255, 0, 0);
-        set_led(1, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Letra G
-        clear_leds();
-        set_led(23, 255, 0, 0);
-        set_led(22, 255, 0, 0);
-        set_led(21, 255, 0, 0);
-        set_led(15, 255, 0, 0);
-        set_led(14, 255, 0, 0);
-        set_led(11, 255, 0, 0);
-        set_led(10, 255, 0, 0);
-        set_led(9, 255, 0, 0);
-        set_led(5, 255, 0, 0);
-        set_led(3, 255, 0, 0);
-        set_led(2, 255, 0, 0);
-        set_led(1, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Letra L
-        clear_leds();
-        set_led(24, 255, 0, 0);
-        set_led(15, 255, 0, 0);
-        set_led(14, 255, 0, 0);
-        set_led(5, 255, 0, 0);
-        set_led(4, 255, 0, 0);
-        set_led(3, 255, 0, 0);
-        set_led(2, 255, 0, 0);
-        set_led(1, 255, 0, 0);
-        set_led(0, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Letra A
-        clear_leds();
-        set_led(23, 255, 0, 0);
-        set_led(22, 255, 0, 0);
-        set_led(21, 255, 0, 0);
-        set_led(19, 255, 0, 0);
-        set_led(15, 255, 0, 0);
-        set_led(14, 255, 0, 0);
-        set_led(13, 255, 0, 0);
-        set_led(12, 255, 0, 0);
-        set_led(11, 255, 0, 0);
-        set_led(10, 255, 0, 0);
-        set_led(9, 255, 0, 0);
-        set_led(5, 255, 0, 0);
-        set_led(4, 255, 0, 0);
-        set_led(0, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Letra B
-        clear_leds();
-        set_led(24, 255, 0, 0);
-        set_led(23, 255, 0, 0);
-        set_led(22, 255, 0, 0);
-        set_led(21, 255, 0, 0);
-        set_led(19, 255, 0, 0);
-        set_led(15, 255, 0, 0);
-        set_led(14, 255, 0, 0);
-        set_led(13, 255, 0, 0);
-        set_led(12, 255, 0, 0);
-        set_led(11, 255, 0, 0);
-        set_led(9, 255, 0, 0);
-        set_led(5, 255, 0, 0);
-        set_led(4, 255, 0, 0);
-        set_led(3, 255, 0, 0);
-        set_led(2, 255, 0, 0);
-        set_led(1, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Limpa os LEDs ao final
-        clear_leds();
-        write_leds();
-        break;
-    case '3':
-        animacao_ascendente();
-        break;
-    case '4': // Animação de onda de luz
-        for (int frame = 0; frame < 5; frame++)
+    case 'B': // Liga os LEDs em azul e toca o buzzer
+        for (int i = 0; i < LED_COUNT; i++)
         {
-            clear_leds();
-            for (int i = 0; i < LED_COUNT; i++)
-            {
-                int intensity = (i + frame) % 5 == 0 ? 255 : 0;
-                set_led(i, intensity, intensity / 2, intensity / 3); // Tons de roxo
-            }
-            write_leds(); // Atualiza os LEDs
-            sleep_ms(250);
+            set_led(i, 0, 0, 255); // Azul 100%
         }
-        clear_leds();
-        write_leds(); // Garante que os LEDs sejam apagados ao final
-        break;
-    case '5': // Animação de "caminho"
-        for (int frame = 0; frame < LED_COUNT; frame++)
-        {
-            clear_leds();
-            set_led(frame % LED_COUNT, 0, 255, 255); // LED atual em ciano
-            write_leds();                            // Atualiza os LEDs
-            sleep_ms(150);
-        }
-        clear_leds();
-        write_leds(); // Garante que os LEDs sejam apagados ao final
+        write_leds();
+        play_buzzer(440, 500); // Toca som de 440 Hz por 500 ms
         break;
 
-    case '6': // Piscar alternado
-        for (int frame = 0; frame < 6; frame++)
-        {
-            clear_leds();
-            if (frame % 2 == 0)
-            {
-                for (int i = 0; i < LED_COUNT; i += 2)
-                {
-                    set_led(i, 255, 255, 0); // Amarelo
-                }
-            }
-            else
-            {
-                for (int i = 1; i < LED_COUNT; i += 2)
-                {
-                    set_led(i, 255, 255, 0); // Amarelo
-                }
-            }
-            write_leds(); // Atualiza os LEDs
-            sleep_ms(300);
-        }
-        clear_leds();
-        write_leds(); // Garante que os LEDs sejam apagados ao final
-        break;
-
-    case '7': // "Corrida" circular
-        for (int frame = 0; frame < LED_COUNT; frame++)
-        {
-            clear_leds();
-            set_led(frame % LED_COUNT, 255, 0, 255);       // Magenta
-            set_led((frame + 1) % LED_COUNT, 128, 0, 128); // Magenta mais fraco
-            write_leds();                                  // Atualiza os LEDs
-            sleep_ms(100);
-        }
-        clear_leds();
-        write_leds(); // Garante que os LEDs sejam apagados ao final
-        break;
-    case '8':
-        // Letra G
-        clear_leds();
-        set_led(23, 255, 0, 0);
-        set_led(22, 255, 0, 0);
-        set_led(21, 255, 0, 0);
-        set_led(15, 255, 0, 0);
-        set_led(14, 255, 0, 0);
-        set_led(11, 255, 0, 0);
-        set_led(10, 255, 0, 0);
-        set_led(9, 255, 0, 0);
-        set_led(5, 255, 0, 0);
-        set_led(3, 255, 0, 0);
-        set_led(2, 255, 0, 0);
-        set_led(1, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-        // Letra L
-        clear_leds();
-        set_led(24, 255, 0, 0);
-        set_led(15, 255, 0, 0);
-        set_led(14, 255, 0, 0);
-        set_led(5, 255, 0, 0);
-        set_led(4, 255, 0, 0);
-        set_led(3, 255, 0, 0);
-        set_led(2, 255, 0, 0);
-        set_led(1, 255, 0, 0);
-        set_led(0, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-        // Letra O
-        clear_leds();
-        set_led(23, 255, 0, 0);
-        set_led(22, 255, 0, 0);
-        set_led(21, 255, 0, 0);
-        set_led(19, 255, 0, 0);
-        set_led(15, 255, 0, 0);
-        set_led(14, 255, 0, 0);
-        set_led(10, 255, 0, 0);
-        set_led(9, 255, 0, 0);
-        set_led(5, 255, 0, 0);
-        set_led(3, 255, 0, 0);
-        set_led(2, 255, 0, 0);
-        set_led(1, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-        // Letra B
-        clear_leds();
-        set_led(24, 255, 0, 0);
-        set_led(23, 255, 0, 0);
-        set_led(22, 255, 0, 0);
-        set_led(21, 255, 0, 0);
-        set_led(19, 255, 0, 0);
-        set_led(15, 255, 0, 0);
-        set_led(14, 255, 0, 0);
-        set_led(13, 255, 0, 0);
-        set_led(12, 255, 0, 0);
-        set_led(11, 255, 0, 0);
-        set_led(9, 255, 0, 0);
-        set_led(5, 255, 0, 0);
-        set_led(4, 255, 0, 0);
-        set_led(3, 255, 0, 0);
-        set_led(2, 255, 0, 0);
-        set_led(1, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-        // Letra A
-        clear_leds();
-        set_led(23, 255, 0, 0);
-        set_led(22, 255, 0, 0);
-        set_led(21, 255, 0, 0);
-        set_led(19, 255, 0, 0);
-        set_led(15, 255, 0, 0);
-        set_led(14, 255, 0, 0);
-        set_led(13, 255, 0, 0);
-        set_led(12, 255, 0, 0);
-        set_led(11, 255, 0, 0);
-        set_led(10, 255, 0, 0);
-        set_led(9, 255, 0, 0);
-        set_led(5, 255, 0, 0);
-        set_led(4, 255, 0, 0);
-        set_led(0, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-        // Letra L
-        clear_leds();
-        set_led(24, 0, 255, 0);
-        set_led(15, 0, 0, 255);
-        set_led(14, 0, 255, 0);
-        set_led(5, 255, 0, 0);
-        set_led(4, 0, 255, 0);
-        set_led(3, 0, 0, 255);
-        set_led(2, 0, 255, 0);
-        set_led(1, 255, 0, 0);
-        set_led(0, 255, 0, 0);
-        write_leds();
-        sleep_ms(1250);
-
-        // Limpa os LEDs ao final
-        clear_leds();
-        write_leds();
-        break;
-
-    case '9': 
-        animacao_descendente();
-        break;
     case 'A':
         clear_leds(); // Apaga todos os LEDs
+        write_leds();
         break;
-    case 'B':
-        for (int i = 0; i < LED_COUNT; i++)
-            set_led(i, 0, 0, 255); // Azul 100%
-        break;
-    case 'C':
-        for (int i = 0; i < LED_COUNT; i++)
-            set_led(i, 204, 0, 0); // Vermelho 80%
-        break;
-    case 'D':
-        for (int i = 0; i < LED_COUNT; i++)
-            set_led(i, 0, 128, 0); // Verde 50%
-        break;
-    case '#':
-        for (int i = 0; i < LED_COUNT; i++)
-            set_led(i, 51, 51, 51); // Branco 20%
-        break;
+
     default:
         clear_leds(); // Apaga qualquer LED ligado
+        write_leds();
         break;
     }
-    write_leds(); // Atualiza os LEDs
 }
 
 void init_hardware(void)
 {
     // Inicializa o GPIO5 como entrada
     gpio_init(5);
-    
-    // Configura o pino GPIO5 com resistor pull-up
     gpio_set_dir(5, GPIO_IN);
     gpio_pull_up(5);
 
-    // Inicializa o teclado matricial
-    for (int i = 0; i < 4; i++)
-    {
-        gpio_init(COL_PINS[i]);
-        gpio_init(ROW_PINS[i]);
-        gpio_set_dir(COL_PINS[i], GPIO_OUT);
-        gpio_put(COL_PINS[i], 1);
-        gpio_set_dir(ROW_PINS[i], GPIO_IN);
-        gpio_pull_up(ROW_PINS[i]);
-    }
+    // Inicializa o pino do buzzer
+    gpio_init(BUZZER_PIN);
+    gpio_set_dir(BUZZER_PIN, GPIO_OUT);
 
     // Inicializa os LEDs
     init_leds();
@@ -581,7 +158,6 @@ void write_leds(void)
 
 char get_key(void)
 {
-    
     for (int col = 0; col < 4; col++)
     {
         gpio_put(COL_PINS[col], 0);
@@ -603,104 +179,3 @@ char get_key(void)
     }
     return 0;
 }
-
-void animacao_ascendente() {
-    clear_leds();
-    set_led(0, 255, 0, 0);
-    set_led(1, 255, 0, 0);
-    set_led(2, 255, 0, 0);
-    set_led(3, 255, 0, 0);
-    set_led(4, 255, 0, 0);
-    write_leds();
-    sleep_ms(500);
-
-    clear_leds();
-    set_led(5, 255, 0, 0);
-    set_led(6, 255, 0, 0);
-    set_led(7, 255, 0, 0);
-    set_led(8, 255, 0, 0);
-    set_led(9, 255, 0, 0);
-    write_leds();
-    sleep_ms(500);
-
-    clear_leds();
-    set_led(10, 255, 0, 0);
-    set_led(11, 255, 0, 0);
-    set_led(12, 255, 0, 0);
-    set_led(13, 255, 0, 0);
-    set_led(14, 255, 0, 0);
-    write_leds();
-    sleep_ms(500);
-
-    clear_leds();
-    set_led(15, 255, 0, 0);
-    set_led(16, 255, 0, 0);
-    set_led(17, 255, 0, 0);
-    set_led(18, 255, 0, 0);
-    set_led(19, 255, 0, 0);
-    write_leds();
-    sleep_ms(500);
-
-    clear_leds();
-    set_led(20, 255, 0, 0);
-    set_led(21, 255, 0, 0);
-    set_led(22, 255, 0, 0);
-    set_led(23, 255, 0, 0);
-    set_led(24, 255, 0, 0);
-    write_leds();
-    sleep_ms(500);
-
-    clear_leds();
-    write_leds();
-}
-
-void animacao_descendente() {
-    clear_leds();
-    set_led(20, 255, 0, 0);
-    set_led(21, 255, 0, 0);
-    set_led(22, 255, 0, 0);
-    set_led(23, 255, 0, 0);
-    set_led(24, 255, 0, 0);
-    write_leds();
-    sleep_ms(500);
-
-    clear_leds();
-    set_led(15, 255, 0, 0);
-    set_led(16, 255, 0, 0);
-    set_led(17, 255, 0, 0);
-    set_led(18, 255, 0, 0);
-    set_led(19, 255, 0, 0);
-    write_leds();
-    sleep_ms(500);
-
-    clear_leds();
-    set_led(10, 255, 0, 0);
-    set_led(11, 255, 0, 0);
-    set_led(12, 255, 0, 0);
-    set_led(13, 255, 0, 0);
-    set_led(14, 255, 0, 0);
-    write_leds();
-    sleep_ms(500);
-
-    clear_leds();
-    set_led(5, 255, 0, 0);
-    set_led(6, 255, 0, 0);
-    set_led(7, 255, 0, 0);
-    set_led(8, 255, 0, 0);
-    set_led(9, 255, 0, 0);
-    write_leds();
-    sleep_ms(500);
-
-    clear_leds();
-    set_led(0, 255, 0, 0);
-    set_led(1, 255, 0, 0);
-    set_led(2, 255, 0, 0);
-    set_led(3, 255, 0, 0);
-    set_led(4, 255, 0, 0);
-    write_leds();
-    sleep_ms(500);
-    
-    clear_leds();
-    write_leds();
-}
-
